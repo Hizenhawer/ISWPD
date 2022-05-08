@@ -2,9 +2,13 @@
 
 # Press Shift+F10 to execute it or replace it with your code.
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+from array import array
 from tkinter import *
 from tkinter import ttk
 
+import numpy
+from sklearn.neural_network import MLPClassifier
+import DatabaseHandler
 
 def print_hi(name):
     # Use a breakpoint in the code line below to debug your script.
@@ -37,6 +41,16 @@ def callback_time(sv):
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
+    X = (list(map(lambda x: [x.elevation, x.descent, x.length], DatabaseHandler.data)))
+    Y = (list(map(lambda x: abs(x.time[0] - x.time[1]), DatabaseHandler.data)))
+
+    for o in DatabaseHandler.training_data:
+            print(o)
+    for o in DatabaseHandler.training_results:
+            print(o)
+
+    clf = MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes = (5, 2), random_state = 1)
+    # clf.fit(X,Y)
     root = Tk()
     frm = ttk.Frame(root, padding=10)
     frm.grid()
