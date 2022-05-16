@@ -6,7 +6,9 @@ from array import array
 from tkinter import *
 from tkinter import ttk
 
-import numpy
+from array import array
+
+import numpy as np
 from sklearn.neural_network import MLPClassifier
 import DatabaseHandler
 
@@ -41,16 +43,22 @@ def callback_time(sv):
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    X = (list(map(lambda x: [x.elevation, x.descent, x.length], DatabaseHandler.data)))
-    Y = (list(map(lambda x: abs(x.time[0] - x.time[1]), DatabaseHandler.data)))
 
-    for o in DatabaseHandler.training_data:
-            print(o)
-    for o in DatabaseHandler.training_results:
-            print(o)
+    there_model = MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes = (5, 2), random_state = 1)
+    X = list(DatabaseHandler.training_data)
+    Y = list(DatabaseHandler.training_results_there)
+    there_model.fit(X, Y)
+    return_model = MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=(5, 2), random_state=1)
+    Y_return = list(DatabaseHandler.training_results_return)
+    return_model.fit(X, Y_return)
 
-    clf = MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes = (5, 2), random_state = 1)
+    predict = X[5]
+    print(predict)
+    print('Przewidywany czas przejścia tam:', there_model.predict([predict])[0])
+    print('Przewidywany czas przejścia z powrotem:', return_model.predict([predict])[0])
+
     # clf.fit(X,Y)
+
     root = Tk()
     frm = ttk.Frame(root, padding=10)
     frm.grid()
@@ -78,7 +86,7 @@ if __name__ == '__main__':
     ttk.Label(frm, text="Wzniesienie", padding=10).grid(column=2, row=1)
     ttk.Label(frm, text="Zejście", padding=10).grid(column=3, row=1)
     ttk.Label(frm, text="Długość (km)", padding=10).grid(column=4, row=1)
-    ttk.Label(frm, text="Czas przejścia (min)", padding=10).grid(column=5, row=1)
+    ttk.Label(frm, text="Czas przejścia tam (min)", padding=10).grid(column=5, row=1)
     ENTRY_NAME.grid(column=0, row=2)
     ENTRY_COLOR.grid(column=1, row=2)
     ENTRY_INCLINE.grid(column=2, row=2)

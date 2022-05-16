@@ -2,6 +2,8 @@ import dataclasses
 from enum import Enum
 from functools import reduce
 
+from array import array
+
 
 class Color(Enum):
     RED = 1
@@ -48,8 +50,9 @@ data = [
     Route("Stacja IMGW ↔ Hala Gąsienicowa", (49.244041, 20.006104), (49.241466, 20.001760), Color.BLACK, 35, 5, 0.4, (5,5)),
     Route("Psia Trawka ↔ Murowaniec, odejście szlaku czarnego", (49.269761, 20.036569), (49.243763, 20.008351), Color.BLACK, 317, 9, 4.1, (70, 55))
         ]
-training_data = map(lambda x: [x.elevation, x.descent, x.length, x.time[0], x.time[1]], data)
-training_results = map(lambda x: [x.color], data)
+training_data = map(lambda x: [x.elevation/1000, x.descent/1000, x.length/10, x.color.value/4], data)
+training_results_there = map(lambda x: x.time[0], data)
+training_results_return = map(lambda x: x.time[1], data)
 data_examples = [
         Color.RED,
         Color.GREEN,
