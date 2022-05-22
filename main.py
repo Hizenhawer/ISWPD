@@ -3,44 +3,15 @@ from tkinter import ttk
 from sklearn.neural_network import MLPClassifier
 import DatabaseHandler
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
-
-
-def callback_name(sv):
-    print(sv.get())
-
-
-def callback_color(sv):
-    print(sv.get())
-
-
-def callback_incline(sv):
-    print(sv.get())
-
-
-def callback_descent(sv):
-    print(sv.get())
-
-
-def callback_length(sv):
-    print(sv.get())
-
-
-def callback_time(sv):
-    print(sv.get())
-    print(sv.get())
-
 def format_data(elevation, descent, length, color):
     return [float(elevation)/1000, float(descent)/1000, float(length)/10, color/4]
+
 def function_callback(thereTime, returnTime, there_model, return_model, elevation, descent, length, color):
     predicted_there_time = there_model.predict([format_data(elevation, descent, length, color)])[0]
     predicted_return_time = return_model.predict([format_data(elevation, descent, length, color)])[0]
     thereTime.set(predicted_there_time)
     returnTime.set(predicted_return_time)
 
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     there_model = MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes = (5, 2), random_state = 1)
     X = list(DatabaseHandler.training_data)

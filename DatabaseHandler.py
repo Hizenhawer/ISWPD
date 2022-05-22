@@ -1,15 +1,10 @@
-import dataclasses
 from enum import Enum
-
-from array import array
-
 
 class Color(Enum):
     CZERWONY = 1
     NIEBIESKI = 2
     CZARNY = 3
     ZIELONY = 4
-
 
 class Route:
     def __init__(self, color, elevation, descent, length, time):
@@ -18,7 +13,6 @@ class Route:
         self.descent = descent
         self.length = length
         self.time = time
-
 
 data = [
     Route(Color.CZERWONY, 40.0, 168.0, 2.3, (40, 50)),
