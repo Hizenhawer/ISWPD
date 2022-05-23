@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import ttk
 from sklearn.neural_network import MLPClassifier
+from sklearn.neural_network import MLPRegressor
 import DatabaseHandler
 
 def format_data(elevation, descent, length, color):
@@ -9,16 +10,16 @@ def format_data(elevation, descent, length, color):
 def function_callback(thereTime, returnTime, there_model, return_model, elevation, descent, length, color):
     predicted_there_time = there_model.predict([format_data(elevation, descent, length, color)])[0]
     predicted_return_time = return_model.predict([format_data(elevation, descent, length, color)])[0]
-    thereTime.set(predicted_there_time)
-    returnTime.set(predicted_return_time)
+    thereTime.set((predicted_there_time*600).__round__(2))
+    returnTime.set((predicted_return_time*600).__round__(2))
 
 if __name__ == '__main__':
-    there_model = MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes = (5, 2), random_state = 1)
-    X = list(DatabaseHandler.training_data)
-    Y_there = list(DatabaseHandler.training_results_there)
+    there_model = MLPRegressor(random_state=1, activation='relu', hidden_layer_sizes=16)
+    X = list(DatabaseHandler.training_data) + list(DatabaseHandler.training_data2)
+    Y_there = list(DatabaseHandler.training_results_there) + list(DatabaseHandler.training_results_there2)
     there_model.fit(X, Y_there)
-    return_model = MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=(5, 2), random_state=1)
-    Y_return = list(DatabaseHandler.training_results_return)
+    return_model = MLPRegressor(random_state=1, activation='relu', hidden_layer_sizes=16)
+    Y_return = list(DatabaseHandler.training_results_return) + list(DatabaseHandler.training_results_return2)
     return_model.fit(X, Y_return)
 
 
@@ -37,8 +38,8 @@ if __name__ == '__main__':
     ENTRY_DESCENT.grid(column=3, row=2)
     ENTRY_LENGTH.grid(column=4, row=2)
     ttk.Label(frm, text="Kolor", padding=10).grid(column=1, row=1)
-    ttk.Label(frm, text="Wzniesienie", padding=10).grid(column=2, row=1)
-    ttk.Label(frm, text="Zejście", padding=10).grid(column=3, row=1)
+    ttk.Label(frm, text="Wzniesienie (m)", padding=10).grid(column=2, row=1)
+    ttk.Label(frm, text="Zejście (m)", padding=10).grid(column=3, row=1)
     ttk.Label(frm, text="Długość (km)", padding=10).grid(column=4, row=1)
     colors = ['CZERWONY', "NIEBIESKI", "CZARNY", "ZIELONY"]
     cb = ttk.Combobox(frm, textvariable=selectedColor, values=colors, state='readonly')

@@ -41,5 +41,8 @@ data = [
     Route(Color.CZARNY, 317, 9, 4.1, (70, 55))
         ]
 training_data = map(lambda x: [x.elevation/1000, x.descent/1000, x.length/10, x.color.value/4], data)
-training_results_there = map(lambda x: x.time[0], data)
-training_results_return = map(lambda x: x.time[1], data)
+training_data2 = map(lambda x: [x.descent/1000, x.elevation/1000, x.length/10, x.color.value/4], data)
+training_results_there = map(lambda x: x.time[0]/600, data)
+training_results_there2 = map(lambda x: x.time[1]/600, data)
+training_results_return = map(lambda x: x.time[1]/600, data)
+training_results_return2 = map(lambda x: x.time[0]/600, data)
